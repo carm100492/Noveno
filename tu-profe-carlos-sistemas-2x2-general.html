@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tu Profe Carlos · Sistemas de ecuaciones lineales 2x2</title>
+<style>
+:root{--ink:#12304a;--acc:#0e7c6b;--acc2:#e3f2ef;--bg:#f2f5f8;--card:#fff;--tx:#1d2733;--mut:#5b6b7a;--line:#d3dce5;--ok:#1b7f4b;--okb:#e5f4ea;--bad:#b3261e;--badb:#fbe9e7;--warn:#8a5a00;--warnb:#fff3d1}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif;color:var(--ink);line-height:1.25;margin:.3em 0}
+.wrap{max-width:860px;margin:auto;padding:14px}
+.view{display:none}.view.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0}
+.hero{background:var(--ink);color:#fff;border-radius:10px;padding:22px}.hero h1{color:#fff;font-size:1.8rem}
+.mut{color:var(--mut);font-size:.92rem}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer;margin:4px 4px 4px 0}
+.btn.s{background:#fff;color:var(--ink);border:1px solid var(--ink)}.btn.d{background:var(--bad)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:6px 10px;font-size:.88rem}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--ink);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:20}
+nav button{flex:1;background:none;border:0;color:#b9cadb;padding:12px 2px;font:inherit;font-size:.74rem;cursor:pointer}
+nav button.on{color:#fff;box-shadow:inset 0 3px 0 #5fd0bd}
+.opts{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.opt{text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;font:inherit;cursor:pointer}
+.opt:hover{border-color:var(--acc)}.opt.sel{border-color:var(--ink);background:var(--acc2)}.opt.ok{border-color:var(--ok);background:var(--okb)}.opt.no{border-color:var(--bad);background:var(--badb)}
+.fb,.sol{border-left:4px solid var(--acc);background:var(--acc2);padding:10px 14px;border-radius:6px;margin:10px 0}
+.fb.bad{border-color:var(--bad);background:var(--badb)}.fb.good{border-color:var(--ok);background:var(--okb)}
+.tag{background:var(--warnb);color:var(--warn);padding:6px 10px;border-radius:6px;font-size:.88rem}
+.box{border:1.5px solid var(--ink);border-radius:8px;padding:12px;margin:10px 0}
+.err{background:var(--badb);padding:10px;border-radius:6px;margin:8px 0}
+.prog{height:8px;background:var(--line);border-radius:5px;overflow:hidden}.prog b{display:block;height:100%;background:var(--acc)}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.15;margin:0 2px;font-size:.95em}
+.fr i{font-style:normal;padding:0 3px}.fr i:first-child{border-bottom:1.5px solid currentColor}
+table{border-collapse:collapse;width:100%;font-size:.92rem;display:block;overflow-x:auto}th,td{border:1px solid var(--line);padding:6px 8px;text-align:left}th{background:var(--acc2)}
+input,select{font:inherit;padding:8px;border:1px solid var(--line);border-radius:6px;margin:4px 6px 4px 0;max-width:100%}
+label{display:block;font-weight:600;margin-top:8px}
+.row{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+#modal{position:fixed;inset:0;background:#0007;display:none;align-items:center;justify-content:center;z-index:50;padding:12px}#modal.on{display:flex}
+#mBox{background:#fff;border-radius:10px;padding:18px;max-width:640px;width:100%;max-height:88vh;overflow:auto}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom));background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;z-index:60;display:none;max-width:90%}#toast.bad{background:var(--bad)}
+.badge{display:inline-block;background:var(--acc2);color:var(--acc);border-radius:20px;padding:2px 10px;font-size:.85rem;font-weight:600}
+#printArea{display:none}
+@media print{body>*:not(#printArea){display:none!important}#printArea{display:block!important;color:#000;font-size:12pt}body{background:#fff;padding:0}@page{margin:12mm}.ph h2,.ph p{margin:2px 0}.pq{margin:8px 0;break-inside:avoid}.po{margin:2px 0 2px 18px}}
+</style></head><body>
+<div class="wrap">
+
+<section id="v-inicio" class="view on">
+ <div class="hero"><h1>Tu Profe Carlos</h1><p>Solución de Sistemas de Ecuaciones Lineales 2x2.</p><p><em>Dos pistas, dos incógnitas: elige el método y deja que hablen.</em></p><p class="mut" style="color:#b9cadb">Nivel: Secundaria · Contexto: Colombia · Recursos Educativos Gratuitos · Funciona sin Internet</p></div>
+ <div class="card"><h3>Aprender</h3><p>Lectura guiada con situaciones cercanas, simulador, cuatro ejemplos y mini práctica.</p><button class="btn" data-go="aprender">Ir a Aprender</button></div>
+ <div class="card"><h3>Ejercicios resueltos</h3><p>Cinco ejercicios nuevos, resueltos paso a paso, cada vez que quieras.</p><button class="btn" data-go="resueltos">Ver ejercicios</button></div>
+ <div class="card"><h3>Estudiante</h3><p>Practica libremente o presenta un examen oficial con el archivo de tu docente.</p><button class="btn" data-go="est">Ir a Estudiante</button></div>
+ <div class="card"><h3>Docente</h3><p>Crea evaluaciones, importa resultados y consulta notas.</p><button class="btn" data-go="doc">Ir a Docente</button></div>
+</section>
+
+<section id="v-aprender" class="view">
+ <h2>Aprender: sistemas de ecuaciones lineales 2×2</h2>
+ <div class="card"><h3>A. Una situación de la tienda</h3>
+ <p>Don Luis vende empanadas y jugos en la esquina de su casa, en Fundación. Un grupo de estudiantes pagó $13.000 por 3 empanadas y 2 jugos. Otro grupo pagó $8.000 por 2 empanadas y 1 jugo. Don Luis no recuerda cuánto cuesta cada cosa. ¿Cómo sacar el precio de cada una con estas dos cuentas? Cada cuenta es una pista; juntas permiten descubrir las dos cantidades desconocidas. Eso es un <b>sistema de ecuaciones</b>.</p></div>
+ <div class="card"><h3>B. Lo que ya sabes</h3><p>Una ecuación lineal es una igualdad con incógnitas de primer grado, como 2x + y = 8. Despejar una incógnita es aplicar operaciones inversas en ambos lados. Un punto (x, y) se ubica en el plano cartesiano con dos coordenadas y una ecuación lineal con dos incógnitas se dibuja como una recta.</p></div>
+ <div class="card"><h3>C. Construcción intuitiva</h3>
+ <p><b>Situación 1 (la tienda):</b> sea x el precio de una empanada y y el de un jugo (en miles). 3x + 2y = 13 y 2x + y = 8. <b>Observación:</b> hay dos ecuaciones y dos incógnitas. <b>Pregunta:</b> ¿qué par (x, y) cumple las dos? <b>Exploración:</b> probando x = 3, y = 2: 3·3 + 2·2 = 13 y 2·3 + 2 = 8. Ese par sirve para ambas.</p>
+ <p><b>Situación 2 (dos tarifas):</b> dos empresas de moto-taxi cobran distinto; el punto donde cuestan lo mismo es la solución del sistema.</p>
+ <p><b>Situación 3 (dos caminos):</b> dos caminos rectos en un mapa se cruzan en un único punto: ese punto cumple las ecuaciones de ambos.</p>
+ <p><b>Definición formal:</b> un <b>sistema de ecuaciones lineales 2×2</b> son dos ecuaciones lineales con las mismas dos incógnitas. Su <b>solución</b> es el par (x, y) que cumple las dos ecuaciones a la vez.</p></div>
+ <div class="card"><h3>D. Lenguaje técnico</h3>
+ <p>Forma general: a₁x + b₁y = c₁ y a₂x + b₂y = c₂. Los números a y b son los <b>coeficientes</b>; c es el <b>término independiente</b>. Cada ecuación es una recta en el plano.</p>
+ <table><tr><th>Caso</th><th>Rectas</th><th>Soluciones</th><th>Nombre</th></tr>
+ <tr><td>Se cortan en un punto</td><td>Secantes</td><td>Una</td><td>Compatible determinado</td></tr>
+ <tr><td>Son la misma recta</td><td>Coincidentes</td><td>Infinitas</td><td>Compatible indeterminado</td></tr>
+ <tr><td>Nunca se cortan</td><td>Paralelas</td><td>Ninguna</td><td>Incompatible</td></tr></table>
+ <p><b>Sistemas equivalentes:</b> dos sistemas son equivalentes si tienen la misma solución. Se obtiene un sistema equivalente multiplicando una ecuación por un número distinto de 0 o sumándole a una ecuación un múltiplo de la otra. Esta idea es la base del método de reducción.</p></div>
+ <div class="card"><h3>E. Los cuatro métodos</h3>
+ <p>Resolveremos siempre el mismo sistema para compararlos: 3x + 2y = 13 y 2x + y = 8.</p>
+ <table><tr><th>Método</th><th>Idea y pasos</th><th>Aplicado al sistema</th></tr>
+ <tr><td><b>Gráfico</b></td><td>Dibujar las dos rectas y leer el punto de corte.</td><td>Las rectas se cruzan en (3, 2).</td></tr>
+ <tr><td><b>Sustitución</b></td><td>Despejar una incógnita en una ecuación y reemplazarla en la otra.</td><td>De 2x + y = 8: y = 8 − 2x. En la primera: 3x + 2(8 − 2x) = 13 → 3x + 16 − 4x = 13 → x = 3; y = 8 − 6 = 2.</td></tr>
+ <tr><td><b>Igualación</b></td><td>Despejar la misma incógnita en ambas e igualar.</td><td>y = (13 − 3x) ÷ 2 e y = 8 − 2x; igualamos: 13 − 3x = 16 − 4x → x = 3; y = 2.</td></tr>
+ <tr><td><b>Reducción</b></td><td>Multiplicar para que una incógnita tenga coeficientes iguales u opuestos y sumar o restar para eliminarla.</td><td>2 · (2x + y = 8) da 4x + 2y = 16. Restamos 3x + 2y = 13: x = 3; y = 8 − 2·3 = 2.</td></tr></table>
+ <p><b>¿Cuándo usar cuál?</b> Sustitución si una incógnita tiene coeficiente 1 o ya está despejada; igualación si la misma incógnita se despeja fácil en ambas; reducción si los coeficientes se pueden igualar fácilmente; gráfico para visualizar o estimar. Los cuatro dan la misma solución porque todos conservan lo que cumplen ambas ecuaciones.</p>
+ <p class="mut">Siempre verifica el par en las dos ecuaciones originales.</p></div>
+ <div class="card"><h3>F. Simulador: rectas y solución</h3>
+ <p class="mut">Ecuación 1: a₁x + b₁y = c₁ · Ecuación 2: a₂x + b₂y = c₂</p>
+ <label>a₁: <span id="sav">2</span></label><input id="sa" type="range" min="-5" max="5" value="2">
+ <label>b₁: <span id="sbv">1</span></label><input id="sb" type="range" min="-5" max="5" value="1">
+ <label>c₁: <span id="scv">11</span></label><input id="sc" type="range" min="-20" max="20" value="11">
+ <label>a₂: <span id="sdv">3</span></label><input id="sd" type="range" min="-5" max="5" value="3">
+ <label>b₂: <span id="sev">-1</span></label><input id="se" type="range" min="-5" max="5" value="-1">
+ <label>c₂: <span id="sfv">9</span></label><input id="sf" type="range" min="-20" max="20" value="9">
+ <svg id="svg" viewBox="0 0 440 440" width="100%" role="img" aria-label="Plano cartesiano con dos rectas"></svg>
+ <p id="sv"></p><p class="mut">Haz que las rectas sean paralelas y luego coincidentes. ¿Qué pasa con la solución?</p></div>
+ <div class="card"><h3>G. Cuatro ejemplos resueltos</h3>
+ <div class="box"><b>Ejemplo 1 · Comprensión e interpretación.</b><p><b>Situación:</b> 3 empanadas y 2 jugos cuestan $13.000; 2 empanadas y 1 jugo cuestan $8.000. <b>Qué se busca:</b> escribir el sistema y comprobar que (3, 2) es solución.</p><p><b>Modelo:</b> 3x + 2y = 13 y 2x + y = 8, con x = precio de la empanada y y = precio del jugo (miles).</p><table><tr><th>x</th><th>1</th><th>2</th><th>3</th></tr><tr><td>y en 3x + 2y = 13</td><td>5</td><td>3,5</td><td>2</td></tr><tr><td>y en 2x + y = 8</td><td>6</td><td>4</td><td>2</td></tr></table>
+ <p><b>Resultado:</b> en x = 3 las dos ecuaciones dan y = 2. <b>Interpretación:</b> la empanada cuesta $3.000 y el jugo $2.000. <b>Verificación:</b> 3·3 + 2·2 = 13 ✔ y 2·3 + 2 = 8 ✔.</p></div>
+ <div class="box"><b>Ejemplo 2 · Relación entre representaciones.</b><p><b>Situación:</b> x + y = 6 y x − y = 2. <b>Qué se busca:</b> relacionar la gráfica con la reducción.</p>
+ <svg id="gridEj" viewBox="0 0 220 220" width="100%" role="img" aria-label="Rectas y = 6 − x e y = x − 2 que se cortan en (4, 2)"></svg>
+ <p><b>Gráfico:</b> las rectas y = 6 − x e y = x − 2 se cruzan en (4, 2). <b>Reducción:</b> sumamos las ecuaciones: (x + y) + (x − y) = 6 + 2 → 2x = 8 → x = 4; y = 6 − 4 = 2. <b>Interpretación:</b> el punto de corte es la solución; la reducción elimina y al sumar porque sus coeficientes son opuestos. <b>Verificación:</b> 4 + 2 = 6 ✔ y 4 − 2 = 2 ✔.</p></div>
+ <div class="box"><b>Ejemplo 3 · Formulación y ejecución.</b><p><b>Situación:</b> 2x + 3y = 12 y x − y = 1. <b>Estrategia:</b> sustitución, porque x se despeja fácil en la segunda.</p><p>1) x = y + 1. 2) En la primera: 2(y + 1) + 3y = 12. 3) 2y + 2 + 3y = 12 → 5y = 10 → y = 2. 4) x = 2 + 1 = 3. <b>Resultado:</b> (3, 2). <b>Verificación:</b> 2·3 + 3·2 = 12 ✔ y 3 − 2 = 1 ✔. <b>Comprobación con reducción:</b> 3 · (x − y = 1) da 3x − 3y = 3; sumada a 2x + 3y = 12 queda 5x = 15 → x = 3 ✔.</p></div>
+ <div class="box"><b>Ejemplo 4 · Razonamiento, modelación y argumentación.</b><p><b>Situación:</b> Camilo dice: «todo sistema 2×2 tiene una solución». Probemos con x + 2y = 5 y 2x + 4y = 3.</p><p><b>Modelo:</b> multiplicamos la primera por 2: 2x + 4y = 10. Restamos la segunda: 0 = 7, una igualdad falsa. <b>Argumento:</b> no existe ningún par que las cumpla: son rectas paralelas y el sistema es incompatible. <b>Transferencia:</b> con 2x + 4y = 10 en lugar de 3, la resta da 0 = 0, siempre cierta: infinitas soluciones (rectas coincidentes). Por eso hay tres casos posibles.</p></div></div>
+ <div class="card"><h3>H. Errores comunes</h3>
+ <div class="err"><b>ERROR:</b> al restar 3x + 2y = 13 menos 4x + 2y = 16, escribir 7x = 29.<br><b>CORRECCIÓN Y RAZONAMIENTO:</b> al restar se cambia el signo de todos los términos de la segunda: (3x − 4x) + (2y − 2y) = 13 − 16 → −x = −3.</div>
+ <div class="err"><b>ERROR:</b> sustituir y = 8 − 2x en 3x + 2y y escribir 3x + 16 − 2x.<br><b>CORRECCIÓN Y RAZONAMIENTO:</b> el 2 multiplica todo el paréntesis: 2(8 − 2x) = 16 − 4x.</div>
+ <div class="err"><b>ERROR:</b> comprobar el par solo en una ecuación.<br><b>CORRECCIÓN Y RAZONAMIENTO:</b> la solución debe cumplir las dos; un par que cumple una sola es un punto de una recta, no el cruce.</div></div>
+ <div class="card"><h3>I. Síntesis</h3><div class="box"><p>• Sistema 2×2: dos ecuaciones lineales, dos incógnitas; la solución es el par (x, y) que cumple ambas.<br>• Métodos: gráfico, sustitución, igualación y reducción; todos llevan a la misma solución.<br>• Tres casos: una solución (secantes), infinitas (coincidentes), ninguna (paralelas).<br>• Si al operar queda 0 = 7 no hay solución; si queda 0 = 0 hay infinitas.<br>• Verifica siempre en las dos ecuaciones originales.</p></div></div>
+ <div class="card"><h3>Mini práctica</h3><button class="btn" id="miniBtn">Generar 3 preguntas nuevas</button><div id="miniBox"></div></div>
+</section>
+
+<section id="v-resueltos" class="view"><h2>Ejercicios resueltos</h2><p class="mut">Independiente de Aprender. Cada clic genera ejercicios nuevos.</p><button class="btn" id="resBtn">Generar 5 ejercicios nuevos</button><div id="resBox"></div></section>
+
+<section id="v-est" class="view"><h2>Estudiante</h2>
+ <div class="card"><h3>Practicar</h3><p>Cinco preguntas nuevas con retroalimentación inmediata. No es examen oficial.</p><button class="btn" id="pracBtn">Empezar práctica</button><div id="pracBox"></div></div>
+ <div class="card"><h3>Presentar examen oficial</h3><p>Carga el archivo <b>.formulario.json</b> que te dio tu docente.</p><input type="file" id="exFile" accept=".json"><div id="exBox"></div></div>
+</section>
+
+<section id="v-doc" class="view"><h2>Docente</h2><div id="docBox"></div></section>
+</div>
+
+<nav><button data-go="inicio" class="on">Inicio</button><button data-go="aprender">Aprender</button><button data-go="resueltos">Resueltos</button><button data-go="est">Estudiante</button><button data-go="doc">Docente</button></nav>
+<div id="modal"><div id="mBox"><div id="mBody"></div><div class="row"><button class="btn" id="mOk">Aceptar</button><button class="btn s" id="mCancel">Cancelar</button></div></div></div>
+<div id="toast"></div><div id="printArea"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),P=a=>a[R(0,a.length-1)];
+const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a),lcm=(a,b)=>a/gcd(a,b)*b;
+const fr=(n,d)=>d==1?''+n:'<span class="fr"><i>'+n+'</i><i>'+d+'</i></span>';
+const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const NIV=['','Bajo','Básico','Alto','Superior'],L='ABCD',TEMAS='Solución de Sistemas de Ecuaciones Lineales 2x2';
+const NM=['Laura','Camilo','Marta','Andrés','Yurleidis','Jhon','Sofía','Luis'];
+const now=()=>new Date().toLocaleString('es-CO');
+const hash=s=>{let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;return h.toString(36)};
+const money=n=>(n<0?'−':'')+'$'+Math.abs(n).toLocaleString('es-CO');
+const dec=x=>String(x).replace('.',',');
+$$('#v-aprender .card,#v-aprender p').forEach(e=>e.innerHTML=e.innerHTML.replace(/\{(-?[\w·]+)\/([\w·]+)\}/g,(m,a,b)=>fr(a,b)));
+$$('#v-aprender td,#v-aprender th').forEach(e=>e.innerHTML=e.innerHTML.replace(/\{(-?[\w·]+)\/([\w·]+)\}/g,(m,a,b)=>fr(a,b)));
+
+/* ---------- Almacenamiento ---------- */
+const KEY='tpc7_state_v1';let idb=null,STORE='localStorage';
+let S={cfg:{min:1,pas:3,max:5},owner:'Tu Profe Carlos',inst:'Recursos Educativos Gratuitos',evals:{},results:[],used:[],trace:[]};
+const openDB=()=>new Promise(res=>{try{const r=indexedDB.open('tpc7',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>{idb=r.result;STORE='IndexedDB';res()};r.onerror=r.onblocked=()=>res()}catch(e){res()}});
+const idbGet=()=>new Promise(res=>{try{const t=idb.transaction('kv').objectStore('kv').get(KEY);t.onsuccess=()=>res(t.result);t.onerror=()=>res()}catch(e){res()}});
+const idbPut=v=>new Promise((res,rej)=>{const t=idb.transaction('kv','readwrite');t.objectStore('kv').put(v,KEY);t.oncomplete=res;t.onerror=t.onabort=()=>rej(t.error)});
+async function save(){const j=JSON.stringify(S);let ok=false;try{localStorage.setItem(KEY,j);ok=true}catch(e){}if(idb){await idbPut(j);ok=true}if(!ok)throw new Error('sin almacenamiento')}
+async function load(){let j=null;if(idb)j=await idbGet();if(!j)try{j=localStorage.getItem(KEY)}catch(e){}if(j)try{Object.assign(S,JSON.parse(j))}catch(e){}}
+async function gone(ids){let ok=true;try{const l=JSON.parse(localStorage.getItem(KEY)||'{}');ids.forEach(i=>{if(l.evals&&l.evals[i])ok=false})}catch(e){}if(idb){try{const s=JSON.parse(await idbGet()||'{}');ids.forEach(i=>{if(s.evals&&s.evals[i])ok=false})}catch(e){ok=false}}return ok}
+
+/* ---------- Familias paramétricas (10) ---------- */
+const IR='Interpretación y representación',FE='Formulación y ejecución',AR='Argumentación';
+const mt=x=>'$'+x+'.000',sg=n=>(n<0?'−':'')+Math.abs(n),pf=(p,q)=>`(${sg(p)}, ${sg(q)})`;
+const FAMS=[
+{id:'F01',nm:'Solución de un sistema',nv:1,comp:[IR],tipo:'Pensamiento variacional',pr:'Comunicar',obj:'Reconocer el par que cumple las dos ecuaciones.',g(){let a1=R(1,4),a2=R(1,4);while(a1==a2)a2=R(1,4);const x=R(1,6),y=R(1,6);if(x==y)return this.g();const c1=a1*x+y,c2=a2*x+y;return[`¿Cuál par (x, y) es solución del sistema ${a1}x + y = ${c1}; ${a2}x + y = ${c2}?`,pf(x,y),[pf(x+1,y-a1),pf(x+1,y-a2),pf(y,x)],[`La solución debe cumplir las dos ecuaciones.`,`Para ${pf(x,y)}: ${a1}·${x} + ${y} = ${c1} y ${a2}·${x} + ${y} = ${c2} ✔.`,`Los otros pares cumplen una sola ecuación o ninguna.`],'Solución = par que cumple ambas ecuaciones a la vez.','Aceptar un par que cumple solo una ecuación.']}},
+{id:'F02',nm:'Despejar una incógnita',nv:1,comp:[FE],tipo:'Pensamiento variacional',pr:'Ejercitar procedimientos',obj:'Despejar x en una ecuación lineal.',g(){const b=R(2,6),c=R(8,20),f=`x = ${c} − ${b}y`;return[`Al despejar x en la ecuación x + ${b}y = ${c} se obtiene:`,f,[`x = ${c} + ${b}y`,`x = ${b}y − ${c}`,`x = ${c-b}y`],[`Partimos de x + ${b}y = ${c}.`,`Restamos ${b}y en ambos lados.`,`${f}.`],'Despejar es aplicar la operación inversa en ambos lados.','Olvidar cambiar el signo al pasar un término al otro lado.']}},
+{id:'F03',nm:'Interpretar el punto de corte',nv:2,comp:[IR],tipo:'Pensamiento variacional',pr:'Comunicar',obj:'Interpretar la intersección de dos rectas.',g(){const p=R(1,8),q=R(1,8);return[`Las rectas de un sistema 2×2 se cortan en el punto (${p}, ${q}). ¿Qué significa ese punto?`,`Es el único par que cumple las dos ecuaciones: x = ${p} e y = ${q}`,[`Es el punto donde la primera recta corta el eje x`,`Es el valor de y cuando x = 0 en la segunda ecuación`,`Es la pendiente común de las dos rectas`],[`Un punto de una recta cumple su ecuación.`,`El punto de corte está en las dos rectas a la vez.`,`Entonces es la solución del sistema.`],'Solución gráfica = punto de intersección.','Confundir el punto de corte con los cortes con los ejes.']}},
+{id:'F04',nm:'Modelar con un sistema',nv:2,comp:[IR],tipo:'Pensamiento variacional',pr:'Modelar',obj:'Escribir el sistema que representa una situación.',g(){let p,q,r,s2;do{p=R(1,4);q=R(1,4);r=R(1,4);s2=R(1,4)}while(p==q||r==s2||p*s2==q*r);const x=R(1,5),y=R(1,5),T=p*x+q*y,U=r*x+s2*y;if(T==U)return this.g();const f=(a,b,c,d,t,u)=>`${a}x + ${b}y = ${t}; ${c}x + ${d}y = ${u}`,n1=P(NM),n2=P(NM.filter(z=>z!=n1));return[`${n1} compró ${p} empanadas y ${q} jugos por ${mt(T)}. ${n2} compró ${r} empanadas y ${s2} jugos por ${mt(U)}. Si x es el precio de una empanada y y el de un jugo, ¿qué sistema representa la situación?`,f(p,q,r,s2,T,U),[f(q,p,r,s2,T,U),f(p,q,s2,r,T,U),f(p,q,r,s2,U,T)],[`Cada compra da una ecuación: cantidad de empanadas · x + cantidad de jugos · y = total.`,`Primera: ${p}x + ${q}y = ${T}.`,`Segunda: ${r}x + ${s2}y = ${U}.`],'Cada pista de la situación se traduce en una ecuación.','Cruzar los coeficientes con las incógnitas.']}},
+{id:'F05',nm:'Verdadero o falso',nv:2,comp:[AR],tipo:'Pensamiento variacional',pr:'Razonar',obj:'Reconocer la afirmación verdadera sobre sistemas y métodos.',g(){const T=['Multiplicar una ecuación por un número distinto de 0 no cambia la solución del sistema','En la reducción se busca que una incógnita tenga coeficientes opuestos para eliminarla','En la sustitución se reemplaza una incógnita despejada en la otra ecuación','Un sistema 2×2 puede no tener solución'],F=['Multiplicar una ecuación por 0 es una forma válida de simplificar un sistema','En la reducción se suman solo los términos de x','La solución de un sistema es solo el valor de x','Si un par cumple una ecuación, es solución del sistema','Un sistema 2×2 siempre tiene una única solución'],ok=P(T);return['¿Cuál de estas afirmaciones es verdadera?',ok,sh(F).slice(0,3),[`Revisamos cada afirmación con la definición de solución y de cada método.`,`Verdadera: «${ok}».`,`Las otras contradicen alguna propiedad.`],'Sistemas equivalentes: se conserva la solución al multiplicar por un número no nulo.','Aceptar un par que cumple solo una ecuación.']}},
+{id:'F06',nm:'Resolver por sustitución',nv:3,comp:[FE],tipo:'Pensamiento variacional',pr:'Ejercitar procedimientos',obj:'Hallar la solución usando sustitución.',g(){const m=R(1,3),x=R(1,6),k=R(1,5),y=m*x+k;if(x==y)return this.g();const a=R(1,4),b=R(1,3),c=a*x+b*y;return[`Resuelve por sustitución: y = ${m}x + ${k}; ${a}x + ${b}y = ${c}. ¿Cuál es la solución (x, y)?`,pf(x,y),[pf(y,x),pf(x+1,y),pf(x,y+1),pf(x-1,y-1)],[`Sustituimos y en la segunda: ${a}x + ${b}(${m}x + ${k}) = ${c}.`,`${a+b*m}x + ${b*k} = ${c} → ${a+b*m}x = ${c-b*k} → x = ${x}.`,`y = ${m}·${x} + ${k} = ${y}.`],'Sustitución: reemplazar una incógnita despejada en la otra ecuación.','Multiplicar solo el primer término del paréntesis.']}},
+{id:'F07',nm:'Resolver por reducción',nv:3,comp:[FE],tipo:'Pensamiento variacional',pr:'Ejercitar procedimientos',obj:'Hallar la solución usando reducción.',g(){const p=R(1,4),q=R(1,4),b=R(1,4),x=R(1,6);let y=R(1,6);if(x==y)y=y%6+1;const c1=p*x+b*y,c2=q*x-b*y;return[`Resuelve por reducción: ${p}x + ${b}y = ${c1}; ${q}x − ${b}y = ${sg(c2)}. ¿Cuál es la solución (x, y)?`,pf(x,y),[pf(y,x),pf(x+1,y),pf(x,y+1),pf(x-1,y-1)],[`Los coeficientes de y son opuestos (${b} y −${b}): sumamos las ecuaciones.`,`${p+q}x = ${c1+c2} → x = ${x}.`,`Sustituimos: ${b}y = ${c1} − ${p*x} → y = ${y}.`],'Reducción: sumar o restar para eliminar una incógnita.','Sumar solo los términos de x y olvidar el lado derecho.']}},
+{id:'F08',nm:'Problema de entradas',nv:3,comp:[FE],tipo:'Pensamiento variacional',pr:'Modelar',obj:'Resolver un problema de cantidades y precios.',g(){const p=R(5,8),q=R(2,4),N=R(5,20),A=R(5,20),T=A+N,Rc=p*A+q*N,u=n=>n+' niños';return[`En una función de cine entraron ${T} personas: adultos ($${p}.000 la entrada) y niños ($${q}.000). Se recaudaron ${mt(Rc)}. ¿Cuántos niños entraron?`,u(N),[u(A),u(N+1),u(N-1),u(T)],[`Sistema: a + n = ${T} y ${p}a + ${q}n = ${Rc}.`,`De la primera: a = ${T} − n. Sustituimos: ${p}(${T} − n) + ${q}n = ${Rc}.`,`${p*T} − ${p-q}n = ${Rc} → n = ${N}.`],'Plantear dos ecuaciones: una de cantidades y otra de dinero.','Confundir el número de adultos con el de niños.']}},
+{id:'F09',nm:'Clasificar un sistema',nv:4,comp:[AR],tipo:'Pensamiento variacional',pr:'Razonar',obj:'Clasificar un sistema sin graficarlo.',g(){const a=R(1,4),b=R(1,4),c=R(3,12),v=R(0,2),k=R(2,4),a2=a+R(1,2),O=['Una única solución (compatible determinado)','Infinitas soluciones (rectas coincidentes)','Ninguna solución (rectas paralelas)'],i=v==0?1:v==1?2:0,d=v==0?k*c:v==1?k*c+R(1,4):R(2,15),e2=v==2?`${a2}x + ${b}y = ${d}`:`${k*a}x + ${k*b}y = ${d}`;return[`Sin graficar, clasifica el sistema ${a}x + ${b}y = ${c}; ${e2}.`,O[i],[...O.filter((x,j)=>j!=i),'No se puede saber sin graficar'],v==2?[`Los coeficientes de x son distintos (${a} y ${a2}) con el mismo coeficiente de y.`,`Las rectas no son paralelas, entonces se cortan en un punto.`]:[`Multiplicamos la primera por ${k}: ${k*a}x + ${k*b}y = ${k*c}.`,v==0?`Es la misma ecuación: ${k*c} = ${d}. Infinitas soluciones.`:`Queda ${k*c} = ${d}, que es falso. Sin solución.`],'Comparar coeficientes: proporcionales → coincidentes o paralelas.','Creer que todo sistema 2×2 tiene una única solución.']}},
+{id:'F10',nm:'Mezcla de café',nv:4,comp:[FE,AR],tipo:'Pensamiento variacional',pr:'Modelar',obj:'Hallar cuánto de cada café se mezcla.',g(){const a=R(10,14),b=R(6,9),A=R(2,9),B=R(2,9),T=A+B,C=a*A+b*B,u=n=>n+' kg';return[`${P(NM)} mezcla café de ${mt(a)} el kg con café de ${mt(b)} el kg para obtener ${T} kg de mezcla que cuestan ${mt(C)} en total. ¿Cuántos kg del café más caro usó?`,u(A),[u(B),u(A+1),u(A-1),u(T)],[`Sistema: A + B = ${T} y ${a}A + ${b}B = ${C}.`,`B = ${T} − A: ${a}A + ${b}(${T} − A) = ${C}.`,`${a-b}A = ${C-b*T} → A = ${A}.`],'Modelar con dos ecuaciones: cantidades y costo.','Plantear solo la ecuación del costo.']}}
+];
+const SEEN=new Set();
+function build(f){const F=f,[en,ok,dis,proc,fo,err]=F.g(),d=[...new Set(dis.filter(x=>x!==ok))].slice(0,3);if(d.length<3)return null;const opts=sh([ok,...d]);return{id:'Q'+Date.now().toString(36)+R(100,999),fam:F.id,nm:F.nm,nivel:F.nv,nn:NIV[F.nv],comp:F.comp,tipo:F.tipo,proceso:F.pr,obj:F.obj,en,ok,opts,ans:opts.indexOf(ok),proc,f:fo,err,fp:F.id+'|'+en}}
+function gen(nv,ids){const fs=FAMS.filter(f=>f.nv==nv&&(!ids||ids.includes(f.id)));for(let t=0;t<40;t++){const q=build(P(fs));if(q&&!SEEN.has(q.fp)){SEEN.add(q.fp);return q}}return build(P(fs))}
+const valid=q=>q&&q.opts.length==4&&new Set(q.opts).size==4&&q.ans>=0&&q.opts.filter(o=>o===q.ok).length==1&&q.proc.length>0&&q.comp.length>0&&q.nivel>=1&&q.nivel<=4;
+const genV=(nv,ids)=>{for(let i=0;i<20;i++){const q=gen(nv,ids);if(valid(q))return q}throw new Error('No se pudo generar')};
+
+/* ---------- Piezas de pregunta ---------- */
+const meta=q=>`<p class="tag">Nivel de desempeño: Nivel ${q.nivel} — ${q.nn}<br>Competencia${q.comp.length>1?'s':''} matemática${q.comp.length>1?'s':''}: ${q.comp.join(', ')}</p>`;
+const sol=q=>`<div class="sol"><p><b>Qué se busca:</b> ${q.obj}</p><p><b>Estrategia:</b> ${q.proc[0]}</p><p><b>Concepto:</b> ${q.f}</p><p><b>Procedimiento:</b></p><ol>${q.proc.map(x=>`<li>${x}</li>`).join('')}</ol><p><b>Resultado:</b> ${q.ok}</p><p><b>Interpretación y verificación:</b> revisamos cada paso y comprobamos que la respuesta tenga sentido en la situación.</p><p><b>Error frecuente:</b> ${q.err}</p></div>`;
+function runner(box,qs,end){let i=0,A=[];
+ const view=()=>{const q=qs[i];box.innerHTML=`<div class="card"><div class="prog"><b style="width:${i/qs.length*100}%"></b></div><p class="mut">Pregunta ${i+1} de ${qs.length}</p><div>${q.en}</div><div class="opts">${q.opts.map((t,k)=>`<button class="opt" data-k="${k}"><b>${L[k]}.</b> ${t}</button>`).join('')}</div><div id="fb"></div></div>`};
+ box.onclick=e=>{const b=e.target.closest('.opt'),q=qs[i];
+  if(b&&A[i]==null){const k=+b.dataset.k;A[i]=k;$$('.opt',box).forEach?0:0;box.querySelectorAll('.opt').forEach((o,j)=>{o.disabled=true;if(j==q.ans)o.classList.add('ok');else if(j==k)o.classList.add('no')});
+   box.querySelector('#fb').innerHTML=`<div class="fb ${k==q.ans?'good':'bad'}"><b>${k==q.ans?'¡Correcto!':'Todavía no.'}</b> Tu respuesta: ${L[k]}. ${q.opts[k]}<br>Respuesta correcta: ${L[q.ans]}. ${q.opts[q.ans]}</div>${sol(q)}${meta(q)}<button class="btn" data-nx="1">${i<qs.length-1?'Siguiente pregunta':'Ver resumen'}</button>`}
+  if(e.target.dataset.nx){if(i<qs.length-1){i++;view()}else{const c=qs.filter((q,j)=>A[j]==q.ans).length;box.innerHTML=`<div class="card"><h3>Resumen: ${c} de ${qs.length} correctas</h3>${qs.map((q,j)=>`<details><summary>${j+1}. ${A[j]==q.ans?'✔':'✘'} Tu respuesta: ${L[A[j]]} · Correcta: ${L[q.ans]}</summary><p>${q.en}</p>${sol(q)}${meta(q)}</details>`).join('')}</div>`}}};
+ view()}
+
+/* ---------- Navegación, modal, utilidades ---------- */
+function go(v){$$('.view').forEach(e=>e.classList.toggle('on',e.id=='v-'+v));$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go==v));scrollTo(0,0);if(v=='doc')docView()}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go)});
+const closeM=()=>$('#modal').classList.remove('on');
+function modal(h,ok,txt){$('#mBody').innerHTML=h;$('#modal').classList.add('on');const b=$('#mOk');b.textContent=txt||'Aceptar';b.disabled=false;b.style.display=ok?'':'none';b.onclick=async()=>{if(ok){const r=await ok();if(r===false)return}closeM()}}
+$('#mCancel').onclick=closeM;
+let tt;function toast(m,bad){const t=$('#toast');t.textContent=m;t.className=bad?'bad':'';t.style.display='block';clearTimeout(tt);tt=setTimeout(()=>t.style.display='none',3500)}
+function dl(name,obj){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(obj,null,1)],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+const readF=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{try{res(JSON.parse(r.result))}catch(e){rej(new Error('El archivo no es un JSON válido.'))}};r.onerror=()=>rej(new Error('No se pudo leer el archivo.'));r.readAsText(f)});
+
+/* ---------- Simulador ---------- */
+(function(){const ids=['sa','sb','sc','sd','se','sf'],ec=(a,b,c)=>`${a}x ${b<0?'−':'+'} ${Math.abs(b)}y = ${c}`;
+ const X=t=>220+20*t,Y=t=>220-20*t;
+ const ln=(a,b,c,col)=>{if(b!=0)return`<line x1="${X(-12)}" y1="${Y((c+12*a)/b)}" x2="${X(12)}" y2="${Y((c-12*a)/b)}" stroke="${col}" stroke-width="2.5"/>`;if(a!=0)return`<line x1="${X(c/a)}" y1="${Y(-12)}" x2="${X(c/a)}" y2="${Y(12)}" stroke="${col}" stroke-width="2.5"/>`;return''};
+ const u=()=>{ids.forEach(i=>$('#'+i+'v').textContent=$('#'+i).value);const [a1,b1,c1,a2,b2,c2]=ids.map(i=>+$('#'+i).value);let g='';for(let t=-10;t<=10;t++)g+=`<line x1="${X(t)}" y1="0" x2="${X(t)}" y2="440" stroke="#12304a" opacity="${t?.12:.7}"/><line x1="0" y1="${Y(t)}" x2="440" y2="${Y(t)}" stroke="#12304a" opacity="${t?.12:.7}"/>`;g+=ln(a1,b1,c1,'#0e7c6b')+ln(a2,b2,c2,'#b7791f');
+  const det=a1*b2-a2*b1;let t=`1) ${ec(a1,b1,c1)} · 2) ${ec(a2,b2,c2)}<br>`;
+  if((a1==0&&b1==0)||(a2==0&&b2==0))t+='<b>Cada ecuación necesita al menos un coeficiente distinto de 0.</b>';
+  else if(det!=0){const x=(c1*b2-c2*b1)/det,y=(a1*c2-a2*c1)/det,f=v=>String(+v.toFixed(2)).replace('.',',');g+=`<circle cx="${X(x)}" cy="${Y(y)}" r="6" fill="#b3261e"/>`;t+=`<b>Compatible determinado:</b> solución (${f(x)}, ${f(y)})<br>Verificación: ${f(a1*x+b1*y)} = ${c1} y ${f(a2*x+b2*y)} = ${c2}`}
+  else if(c1*b2==c2*b1&&a1*c2==a2*c1)t+='<b>Compatible indeterminado:</b> rectas coincidentes, infinitas soluciones.';
+  else t+='<b>Incompatible:</b> rectas paralelas, sin solución.';
+  $('#svg').innerHTML=g;$('#sv').innerHTML=t};
+ ids.forEach(i=>$('#'+i).oninput=u);u();
+ const x2=v=>20+20*v,y2=v=>140-20*v;let h='';for(let i=0;i<=10;i++)h+=`<line x1="${x2(i)}" y1="0" x2="${x2(i)}" y2="200" stroke="#12304a" opacity=".12"/>`;for(let j=-3;j<=7;j++)h+=`<line x1="20" y1="${y2(j)}" x2="220" y2="${y2(j)}" stroke="#12304a" opacity="${j?.12:.7}"/>`;h+=`<line x1="20" y1="0" x2="20" y2="200" stroke="#12304a"/><line x1="${x2(0)}" y1="${y2(6)}" x2="${x2(8)}" y2="${y2(-2)}" stroke="#0e7c6b" stroke-width="2.5"/><line x1="${x2(0)}" y1="${y2(-2)}" x2="${x2(8)}" y2="${y2(6)}" stroke="#b7791f" stroke-width="2.5"/><circle cx="${x2(4)}" cy="${y2(2)}" r="5" fill="#b3261e"/><text x="${x2(4)+8}" y="${y2(2)-6}" font-size="11" fill="#b3261e">(4, 2)</text>`;$('#gridEj').innerHTML=h})();
+
+/* ---------- Mini práctica y resueltos ---------- */
+$('#miniBtn').onclick=()=>runner($('#miniBox'),[genV(1),genV(3,['F06','F07']),genV(4)],0);
+$('#resBtn').onclick=()=>{const qs=[1,2,3,4,4].map(n=>genV(n));$('#resBox').innerHTML=qs.map((q,i)=>`<div class="card"><span class="badge">Ejercicio ${i+1} · ${q.nm}</span><p>${q.en}</p><div class="opts">${q.opts.map((t,k)=>`<div class="opt ${k==q.ans?'ok':''}"><b>${L[k]}.</b> ${t}</div>`).join('')}</div>${sol(q)}${meta(q)}</div>`).join('')};
+$('#pracBtn').onclick=()=>runner($('#pracBox'),[genV(1),genV(2),genV(3),genV(4),genV(4)],0);
+
+/* ---------- Examen oficial ---------- */
+$('#exFile').onchange=async e=>{const box=$('#exBox');const f=e.target.files[0];if(!f)return;
+ try{const x=await readF(f);if(x.tipo!='formulario'||!/^FORM-\d{6}$/.test(x.id)||!Array.isArray(x.qs)||!x.qs.length)throw new Error('Este archivo no es un formulario válido.');
+  if(x.qs.some(q=>typeof q.en!='string'||!Array.isArray(q.opts)||q.opts.length!=4))throw new Error('El formulario tiene preguntas incompletas.');
+  if(x.chk!==hash(x.id+JSON.stringify(x.qs)))throw new Error('El formulario fue modificado o está dañado.');
+  box.innerHTML=`<div class="card"><h3>${x.id}</h3><label>Nombre<input id="eN"></label><label>Grado<input id="eG"></label><label>Curso<input id="eC"></label><button class="btn" id="eGo">Comenzar examen</button><p class="mut" id="eE"></p></div>`;
+  $('#eGo').onclick=()=>{const n=$('#eN').value.trim(),g=$('#eG').value.trim(),c=$('#eC').value.trim();if(!n||!g||!c){$('#eE').textContent='Completa nombre, grado y curso.';return}exam(x,{n,g,c})}
+ }catch(err){box.innerHTML=`<div class="fb bad">${err.message}</div>`}};
+function exam(x,s){const box=$('#exBox'),A=x.qs.map(()=>-1);let i=0;
+ const view=()=>{const q=x.qs[i];box.innerHTML=`<div class="card"><div class="prog"><b style="width:${(i+1)/x.qs.length*100}%"></b></div><p class="mut">Pregunta ${i+1} de ${x.qs.length}</p><div>${q.en}</div><div class="opts">${q.opts.map((t,k)=>`<button class="opt ${A[i]==k?'sel':''}" data-k="${k}"><b>${L[k]}.</b> ${t}</button>`).join('')}</div><button class="btn s" data-p="1" ${i?'':'disabled'}>Anterior</button><button class="btn" data-n="1">${i<x.qs.length-1?'Siguiente':'Finalizar y enviar'}</button></div>`};
+ box.onclick=e=>{const o=e.target.closest('.opt');if(o){A[i]=+o.dataset.k;view()}
+  if(e.target.dataset.p&&i){i--;view()}
+  if(e.target.dataset.n){if(i<x.qs.length-1){i++;view();return}
+   const un=A.filter(a=>a<0).length;if(un&&!box.dataset.w){box.dataset.w=1;toast(`Te faltan ${un} sin responder. Pulsa de nuevo para enviar así.`,1);return}
+   const r={tipo:'resultado',id:x.id,nombre:s.n,grado:s.g,curso:s.c,fecha:now(),resp:A,corr:A.map((a,p)=>({pos:p+1,op:a<0?'—':L[a]}))};r.chk=hash(r.id+'|'+r.nombre+'|'+r.resp.join(',')+'|'+x.chk);box.onclick=null;
+   const nm=`${x.id}-${s.n.replace(/\W+/g,'_')}.resultado.json`;dl(nm,r);
+   box.innerHTML=`<div class="card"><h3>Examen enviado</h3><p>Tu archivo de resultado se descargó. Entrégaselo a tu docente.</p><button class="btn" id="again">Descargar de nuevo</button></div>`;$('#again').onclick=()=>dl(nm,r)}};
+ view()}
+
+/* ---------- Docente ---------- */
+let unlocked=false;
+function docView(){const b=$('#docBox');if(!unlocked){b.innerHTML=`<div class="card"><label for="pw">Contraseña</label><input id="pw" type="password" autocomplete="off"><button class="btn" id="pwGo">Entrar</button><p id="pwE" style="color:var(--bad)"></p></div>`;const t=()=>{if($('#pw').value===['T','E','A'].join('')){unlocked=true;docView()}else $('#pwE').textContent='Contraseña incorrecta.'};$('#pwGo').onclick=t;$('#pw').onkeydown=e=>{if(e.key=='Enter')t()};return}
+ b.innerHTML=`<p>Almacenamiento activo: <span class="badge">${STORE}${STORE=='IndexedDB'?' + respaldo localStorage':''}</span></p>
+ <div class="card"><h3>Configuración SIEE</h3><label>Nota mínima<input id="cMin" type="number" step="0.1" value="${S.cfg.min}"></label><label>Nota aprobatoria<input id="cPas" type="number" step="0.1" value="${S.cfg.pas}"></label><label>Nota máxima<input id="cMax" type="number" step="0.1" value="${S.cfg.max}"></label><button class="btn" id="cSave">Guardar configuración</button></div>
+ <div class="card"><h3>Crear evaluación</h3><label>Grado<select id="nG">${[1,2,3,4,5,6,7,8,9,10,11].map(g=>`<option>${g}</option>`).join('')}</select></label><label>Asignatura<select id="nA"><option>Matemáticas</option><option>Álgebra</option><option>Cálculo</option><option>Estadística</option><option>Geometría</option></select></label><label>Nivel<select id="nN"><option>Bajo</option><option>Básico</option><option>Alto</option><option>Superior</option><option>Mixto</option></select></label><label>Número de preguntas<input id="nQ" type="number" min="1" max="40" value="8"></label><button class="btn" id="nGo">Crear evaluación</button><p class="mut">Grado y asignatura son solo informativos: no cambian el banco de preguntas.</p></div>
+ <div class="card"><h3>Mis evaluaciones</h3><button class="btn d sm" data-act="delall">Eliminar todas las evaluaciones</button><p class="mut">Descarga una copia (.formulario.json) antes de eliminar.</p><div id="listEv"></div></div>
+ <div class="card"><h3>Importar resultados (.resultado.json)</h3><input type="file" id="rFile" accept=".json" multiple><div id="listRes"></div></div>
+ <div class="card"><h3>Trazabilidad</h3><div id="trace" class="mut"></div></div>
+ <p class="mut">Las respuestas no se incluyen en el formulario del estudiante; esta protección evita revelaciones casuales, pero un HTML sin servidor no ofrece seguridad criptográfica absoluta.</p>`;renderLists()}
+function renderLists(){const E=Object.values(S.evals).sort((a,b)=>b.ts-a.ts);
+ $('#listEv').innerHTML=E.length?E.map(e=>`<div class="card"><b>${e.id}</b> · ${e.grado}° · ${e.asig} · Nivel ${e.nivelSel} · ${e.qs.length} preguntas · ${e.fecha} · Resultados: ${S.results.filter(r=>r.evalId==e.id).length}<div class="row">${[['ver','Ver'],['imp','Imprimir'],['json','Descargar .formulario.json'],['pdf','Descargar PDF'],['del','Eliminar']].map(([a,t])=>`<button class="btn sm ${a=='del'?'d':'s'}" data-act="${a}" data-id="${e.id}">${t}</button>`).join('')}</div></div>`).join(''):'<p>Aún no has creado evaluaciones</p>';
+ const sc=r=>{const e=S.evals[r.evalId];const c=e?r.resp.filter((a,i)=>a==e.qs[i].ans).length:0,t=e?e.qs.length:0,{min,max}=S.cfg;const sug=t?Math.round((min+(max-min)*c/t)*10)/10:min;return{c,t,sug,fin:r.final??sug}};
+ $('#listRes').innerHTML=S.results.length?`<table><tr><th>Estudiante</th><th>Evaluación</th><th>Correctas</th><th>Nota</th><th></th></tr>${S.results.map(r=>{const s=sc(r);return`<tr><td>${r.nombre} (${r.grado}, ${r.curso})</td><td>${r.evalId}</td><td>${s.c}/${s.t}</td><td>${s.fin}</td><td><button class="btn sm s" data-act="res" data-id="${r.rid}">Detalle</button></td></tr>`}).join('')}</table>`:'<p class="mut">Sin resultados importados.</p>';
+ $('#trace').innerHTML=S.trace.slice(-8).reverse().map(t=>`${t.d} — ${t.t}`).join('<br>')||'Sin eventos.';window._sc=sc}
+$('#docBox').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.id,act=b.dataset.act;
+ if(b.id=='cSave'){const mi=+$('#cMin').value,pa=+$('#cPas').value,ma=+$('#cMax').value;if(!(mi<pa&&pa<=ma)){toast('Debe cumplirse: mínima < aprobatoria ≤ máxima.',1);return}S.cfg={min:mi,pas:pa,max:ma};S.trace.push({t:'Configuración SIEE guardada',d:now()});try{await save();renderLists();toast('Configuración guardada')}catch(x){toast('No se pudo guardar.',1)}}
+ if(b.id=='nGo')return crear();
+ if(act=='ver'){const e2=S.evals[id];modal(`<h3>${id}</h3>${e2.qs.map((q,i)=>`<p><b>${i+1}.</b> ${q.en}</p>${q.opts.map((t,k)=>`<div class="opt ${k==q.ans?'ok':''}">${L[k]}. ${t}</div>`).join('')}${meta(q)}`).join('')}`,null)}
+ if(act=='imp'||act=='pdf')printEval(id);
+ if(act=='json'){const e2=S.evals[id],qs=e2.qs.map((q,i)=>({pos:i+1,en:q.en,opts:q.opts}));dl(id+'.formulario.json',{tipo:'formulario',id,grado:e2.grado,asig:e2.asig,temas:TEMAS,propietario:S.owner,institucion:S.inst,qs,chk:hash(id+JSON.stringify(qs))})}
+ if(act=='del'){const n=S.results.filter(r=>r.evalId==id).length;modal(`<h3>Eliminar ${id}</h3><p>Se borrarán la evaluación, sus preguntas, <b>${n}</b> resultado(s) importado(s) y su trazabilidad asociada. No se puede deshacer.</p><p class="mut">Te recomendamos descargar antes el .formulario.json.</p>`,async()=>{delete S.evals[id];S.results=S.results.filter(r=>r.evalId!=id);S.trace=S.trace.filter(t=>!t.ev||t.ev!=id);S.trace.push({t:'Eliminada '+id,d:now()});try{await save();if(!await gone([id]))throw 0}catch(x){toast('No se pudo eliminar. Intenta de nuevo.',1);return false}renderLists();toast(`Evaluación ${id} eliminada`)},'Eliminar')}
+ if(act=='delall'){modal(`<h3>Eliminar todas las evaluaciones</h3><p>Se borrarán todas las evaluaciones, preguntas y resultados. Se conservan la configuración SIEE, el propietario, la institución y la contraseña. Escribe <b>ELIMINAR</b> para confirmar.</p><input id="delTxt" autocomplete="off">`,async()=>{const ids=Object.keys(S.evals);S.evals={};S.results=[];S.trace.push({t:'Eliminadas todas las evaluaciones ('+ids.join(', ')+')',d:now()});try{await save();if(!await gone(ids))throw 0}catch(x){toast('No se pudo eliminar. Intenta de nuevo.',1);return false}renderLists();toast('Todas las evaluaciones fueron eliminadas')},'Eliminar todo');$('#mOk').disabled=true;$('#delTxt').oninput=ev=>{$('#mOk').disabled=ev.target.value!=='ELIMINAR'}}
+ if(act=='res'){const r=S.results.find(x=>x.rid==id),ev=S.evals[r.evalId],s=window._sc(r);const lv={},cp={};ev.qs.forEach((q,i)=>{const ok=r.resp[i]==q.ans;(lv['Nivel '+q.nivel+' — '+q.nn]=lv['Nivel '+q.nivel+' — '+q.nn]||[0,0])[1]++;q.comp.forEach(c=>{(cp[c]=cp[c]||[0,0])[1]++;if(ok)cp[c][0]++});if(ok)lv['Nivel '+q.nivel+' — '+q.nn][0]++});
+  modal(`<h3>${r.nombre} · ${r.evalId}</h3><p>${r.fecha} · Correctas ${s.c}, incorrectas ${s.t-s.c}, total ${s.t} · ${Math.round(s.c/s.t*100)} % · Nota sugerida ${s.sug}${s.sug>=S.cfg.pas?' (aprueba)':' (no aprueba)'}</p><label>Nota final<input id="nF" type="number" step="0.1" value="${s.fin}"></label><p><b>Por nivel:</b> ${Object.entries(lv).map(([k,v])=>`${k}: ${v[0]}/${v[1]}`).join(' · ')}</p><p><b>Por competencia:</b> ${Object.entries(cp).map(([k,v])=>`${k}: ${v[0]}/${v[1]}`).join(' · ')}</p>${ev.qs.map((q,i)=>`<details><summary>${i+1}. ${r.resp[i]==q.ans?'✔':'✘'} Estudiante: ${r.resp[i]<0?'—':L[r.resp[i]]} · Correcta: ${L[q.ans]}</summary>${sol(q)}${meta(q)}</details>`).join('')}`,async()=>{const v=+$('#nF').value;if(!(v>=S.cfg.min&&v<=S.cfg.max)){toast('La nota debe estar entre la mínima y la máxima.',1);return false}r.final=v;S.trace.push({t:`Nota final ${v} para ${r.nombre} (${r.evalId})`,d:now()});try{await save();renderLists()}catch(x){toast('No se pudo guardar.',1);return false}},'Guardar nota final')}});
+$('#docBox').addEventListener('change',async e=>{if(e.target.id!='rFile')return;const fs=[...e.target.files],msgs=[];
+ for(const f of fs){try{const r=await readF(f),ev=S.evals[r.id];
+  if(r.tipo!='resultado'||!ev)throw new Error('la evaluación '+(r.id||'?')+' no existe aquí');
+  if(!Array.isArray(r.resp)||r.resp.length!=ev.qs.length||r.resp.some(a=>!(a>=-1&&a<=3)))throw new Error('las respuestas no corresponden a las preguntas');
+  const qs=ev.qs.map((q,i)=>({pos:i+1,en:q.en,opts:q.opts}));if(r.chk!==hash(r.id+'|'+r.nombre+'|'+r.resp.join(',')+'|'+hash(r.id+JSON.stringify(qs))))throw new Error('el archivo fue modificado');
+  if(S.results.some(x=>x.evalId==r.id&&x.nombre.toLowerCase()==r.nombre.toLowerCase()&&x.curso==r.curso))throw new Error('ya existe un resultado de '+r.nombre+' (no se sobrescribió)');
+  S.results.push({rid:'R'+Date.now().toString(36)+R(100,999),evalId:r.id,nombre:r.nombre,grado:r.grado,curso:r.curso,fecha:r.fecha,resp:r.resp,final:null});S.trace.push({t:`Resultado importado: ${r.nombre} (${r.id})`,d:now()});msgs.push(`✔ ${r.nombre}`)
+ }catch(err){msgs.push(`✘ ${f.name}: ${err.message}.`)}}
+ try{await save()}catch(x){msgs.push('No se pudo guardar.')}e.target.value='';renderLists();toast(msgs.join(' | '),msgs.some(m=>m[0]=='✘'))});
+async function crear(){const n=Math.max(1,Math.min(40,+$('#nQ').value||0)),sel=$('#nN').value;let lv=[];
+ if(sel=='Mixto'){const base=Math.floor(n/4),ex=n%4;for(let k=1;k<=4;k++)for(let j=0;j<base+(k>4-ex?1:0);j++)lv.push(k)}else lv=Array(n).fill(NIV.indexOf(sel));
+ let qs;try{qs=lv.map(v=>genV(v))}catch(x){toast('No se pudo generar la evaluación.',1);return}
+ let id;do{id='FORM-'+R(100000,999999)}while(S.used.includes(id));S.used.push(id);
+ S.evals[id]={id,grado:$('#nG').value,asig:$('#nA').value,nivelSel:sel,fecha:now(),ts:Date.now(),qs};S.trace.push({t:'Creada '+id,d:now()});
+ try{await save();renderLists();toast('Evaluación '+id+' creada')}catch(x){toast('No se pudo guardar la evaluación.',1)}}
+function printEval(id){const e=S.evals[id],rs=S.results.filter(r=>r.evalId==id);
+ let h=`<div class="ph"><h2>${S.owner}</h2><p>${S.inst}</p><p>Asignatura: ${e.asig} · Grado: ${e.grado}° · Formulario: ${id}</p><p>Temas: ${TEMAS}</p><p>Nombre: ____________________ Curso: ______ Fecha: __________</p></div>`;
+ e.qs.forEach((q,i)=>{h+=`<div class="pq"><p><b>${i+1}.</b> ${q.en}</p>${q.opts.map((t,k)=>`<p class="po">${L[k]}. ${t}</p>`).join('')}</div>`});
+ h+=`<div style="page-break-before:always"></div><h2>Solucionario del docente · ${id}</h2>`+e.qs.map((q,i)=>`<div class="pq"><p><b>${i+1}. Respuesta correcta: ${L[q.ans]}</b> · Nivel ${q.nivel} — ${q.nn} · ${q.comp.join(', ')}</p><ol>${q.proc.map(x=>`<li>${x}</li>`).join('')}</ol><p>Explicación: ${q.f}</p></div>`).join('');
+ h+=`<div style="page-break-before:always"></div><h2>Reporte grupal · ${id}</h2><table><tr><th>Estudiante</th><th>Grado</th><th>Formulario</th><th>Correctas</th><th>Nota</th></tr>${rs.map(r=>{const s=window._sc(r);return`<tr><td>${r.nombre}</td><td>${r.grado}</td><td>${id}</td><td>${s.c}/${s.t}</td><td>${s.fin}</td></tr>`}).join('')||'<tr><td colspan="5">Sin resultados importados</td></tr>'}</table>`;
+ $('#printArea').innerHTML=h;window.print()}
+(async()=>{await openDB();await load()})();
+</script></body></html>
